@@ -175,8 +175,6 @@ nnoremap L .k
 " MAP REDO TO THE 'R' KEY (FOR SYMETRY WITH THE 'U' KEY)
 nmap r <C-R>
 
-" NAVIGATION BETWEEN WINDOW BUFFERS
-
 " jump up and down open windows
 nnoremap <c-h> <c-w>W
 nnoremap <c-l> <c-w>w
@@ -188,8 +186,6 @@ nmap <c-k> :bprevious<CR>
 " windows only commands? - the mac goldtouch keyboard uses <d-l> instead...
 nmap <a-l> i<C-R>=line('.')<CR><esc>
 imap <a-l> <C-R>=line('.')<CR>
-nmap <a-1> V<a-1>
-nmap <a-2> V<a-2>
 
 
 
@@ -261,7 +257,7 @@ nnoremap ? :noautocmd vimgrep //j **/*.<C-R>=expand("%:e").repeat(" ",5-strlen(e
 " filetype specific header comment
 "--------------------------------------------------
 " Standard
-nnoremap <a-6> ggO<C-R>=b:comment_leader<CR> <esc>80a-<esc>o<C-R>=b:comment_leader<CR> Programmer: Jason Thorpe<esc>o<C-R>=b:comment_leader<CR> Date    <C-R>=strftime("%c")<CR><CR><C-R>=b:comment_leader<CR> Language:  <C-R>=b:fileType<CR><esc>o<C-R>=b:comment_leader<CR> Purpose:  <esc>o<C-R>=b:comment_leader<CR> Comments:  <esc>o<C-R>=b:comment_leader<CR> <esc>80a-<esc>j
+nnoremap <a-6> ggO<C-R>=Get_leader()<CR> <esc>80a-<esc>o<C-R>=Get_leader()<CR> Programmer: Jason Thorpe<esc>o<C-R>=Get_leader()<CR> Date    <C-R>=strftime("%c")<CR><CR><C-R>=Get_leader()<CR> Language:  <C-R>=b:fileType<CR><esc>o<C-R>=Get_leader()<CR> Purpose:  <esc>o<C-R>=Get_leader()<CR> Comments:  <esc>o<C-R>=Get_leader()<CR> <esc>80a-<esc>j
 
 "--------------------------------------------------
 " FAST CODE COMMENTING
@@ -269,59 +265,87 @@ nnoremap <a-6> ggO<C-R>=b:comment_leader<CR> <esc>80a-<esc>o<C-R>=b:comment_lead
 
 if 0
 
-	" note that on the mac goldtough the <d-3> key is
-	" where the <a-1> key is on the windows goldtouch
-
-	nnoremap <d-1> :s/^<C-R>=b:comment_leader<CR>-- //e<CR>:nohls<cr>k
-	nnoremap <d-2> :s/^<C-R>=b:comment_leader<CR>//e<CR>:nohls<cr>k
-	nnoremap <d-3> :s/^/<C-R>=b:comment_leader<CR>/e<CR>:nohls<cr>j
-	nnoremap <d-4> :s/^/<C-R>=b:comment_leader_long<CR>/e<CR>:nohls<cr>j
-
-	vnoremap <d-1> :s/^<C-R>=b:comment_leader<CR>-- //e<CR>:nohls<cr>
-	vnoremap <d-2> :s/^<C-R>=b:comment_leader<CR>//e<CR>:nohls<cr>
-	vnoremap <d-3> :s/^\(.\)/<C-R>=b:comment_leader<CR>\1/e<CR>:nohls<cr>
-	vnoremap <d-4> :s/^\(.\)/<C-R>=b:comment_leader_long<CR>\1/e<CR>:nohls<cr>
-
-	" THIS COMMENTS OUT BLANK LINES AS WELL
-	vnoremap <d-5> :s/^/<C-R>=b:comment_search_leader_long<CR>/e<cr>/<Up><Up><esc>:nohls<CR>
+"-- 	" note that on the mac goldtough the <d-3> key is
+"-- 	" where the <a-1> key is on the windows goldtouch
+"-- 
+"-- 	nnoremap <d-1> :s/^<C-R>=Get_leader()<CR>-- //e<CR>:nohls<cr>k
+"-- 	nnoremap <d-2> :s/^<C-R>=Get_leader()<CR>//e<CR>:nohls<cr>k
+"-- 	nnoremap <d-3> :s/^/<C-R>=Get_leader()<CR>/e<CR>:nohls<cr>j
+"-- 	nnoremap <d-4> :s/^/<C-R>=Get_leader()<CR>/e<CR>:nohls<cr>j
+"-- 
+"-- 	vnoremap <d-1> :s/^<C-R>=Get_leader()<CR>-- //e<CR>:nohls<cr>
+"-- 	vnoremap <d-2> :s/^<C-R>=Get_leader()<CR>//e<CR>:nohls<cr>
+"-- 	vnoremap <d-3> :s/^\(.\)/<C-R>=Get_leader()<CR>\1/e<CR>:nohls<cr>
+"-- 	vnoremap <d-4> :s/^\(.\)/<C-R>=Get_leader()<CR>\1/e<CR>:nohls<cr>
+"-- 
+"-- 	" THIS COMMENTS OUT BLANK LINES AS WELL
+"-- 	vnoremap <d-5> :s/^/<C-R>=b:comment_search_leader_long<CR>/e<cr>/<Up><Up><esc>:nohls<CR>
 
 else
 
-	nnoremap <a-3> 0i<C-R>=b:comment_leader<CR><esc>j
-	nnoremap <a-4> 0i<C-R>=b:comment_leader<CR>-- <esc>j
+	nmap <a-1> V<a-1><esc>0k
+	nmap <a-2> V<a-2><esc>0k
+	nnoremap <a-3> 0i<C-R>=Get_leader()<CR> <esc>0j
+	nnoremap <a-4> 0i<C-R>=Get_leader()<CR>-- <esc>0j
 
-	vnoremap <a-1> :s<C-R>=Build_Replacer(1)<CR><CR>/<Up><Up><esc>:nohls<CR>``k
-	vnoremap <a-2> :s<C-R>=Build_Replacer(0)<CR><CR>/<Up><Up><esc>:nohls<CR>``k
-	vnoremap <a-3> :s<C-R>=Build_Inserter(0)<CR><CR>/<Up><Up><esc>:nohls<CR>``
-	vnoremap <a-4> :s<C-R>=Build_Inserter(1)<CR><CR>/<Up><Up><esc>:nohls<CR>``
+	vnoremap <a-1> :s/^<C-R>=Build_Comment_Expr()<CR>-- //<CR>/<Up><Up><esc>:nohls<CR>``
+	vnoremap <a-2> :s/^<C-R>=Build_Comment_Expr()<CR> //<CR><CR>/<Up><Up><esc>:nohls<CR>``
+	vnoremap <a-3> :s/^\(.\)/<C-R>=Build_Comment_Expr()<CR> \1/<CR>/<Up><Up><esc>:nohls<CR>``
+	vnoremap <a-4> :s/^\(.\)/<C-R>=Build_Comment_Expr()<CR>-- \1/<CR>/<Up><Up><esc>:nohls<CR>``
+
 	" THIS COMMENTS OUT BLANK LINES AS WELL
-	vnoremap <a-5> :s/^/<C-R>=Build_Inserter(1)<CR>e<cr>/<Up><Up><esc>:nohls<CR>
+	vnoremap <a-5> :s/^/<C-R>=Build_Comment_Expr()<CR>-- /<cr>/<Up><Up><esc>:nohls<CR>``
 
-	"nnoremap <a-3> 0i<C-R>=b:comment_leader<CR><esc>j
-	"nnoremap <a-4> 0i<C-R>=b:comment_leader_long<CR><esc>j
-
+	"nnoremap <a-3> 0i<C-R>=Get_leader()<CR><esc>j
+	"nnoremap <a-4> 0i<C-R>=Get_leader()<CR><esc>j
+"-- 
 	"vnoremap <a-1> :s/^<C-R>=b:comment_search_leader_long<CR>//e<cr>/<Up><Up><esc>:nohls<CR>``
 	"vnoremap <a-2> :s/^<C-R>=b:comment_search_leader<CR>//e<cr>/<Up><Up><esc>:nohls<CR>``
 	"vnoremap <a-3> :s/^\(.\+\)/<C-R>=b:comment_search_leader<CR>\1/e<cr>/<Up><Up><esc>:nohls<CR>``
-	"vnoremap <a-4> :s/^\(.\+\)/<C-R>=b:comment_leader<CR>\1/e<cr>/<Up><Up><esc>:nohls<CR>``
+	"vnoremap <a-4> :s/^\(.\+\)/<C-R>=Get_leader()<CR>\1/e<cr>/<Up><Up><esc>:nohls<CR>``
 endif
 
 
-function Build_Replacer(long)
-	if a:long
-		return "/^".substitute(b:comment_leader, "\\(\\\\\\|\\/\\)", {m -> '\'.m[1]}, "g")."-- //"
-	else
-		return "/^".substitute(b:comment_leader, "\\(\\\\\\|\\/\\)", {m -> '\'.m[1]}, "g")." //"
-	endif
+function Get_leader()
+	if exists("b:comment_literal")
+		return b:comment_literal
+	else 
+		return b:comment_leader
+	endif 
 endfunction
 
-function Build_Inserter(long)
-	if a:long
-		return "/^\\(.\\)/".substitute(b:comment_leader, "\\(\\\\\\|\\/\\)", {m -> '\'.m[1]}, "g")."-- \\1/e"
-	else
-		return "/^\\(.\\)/".substitute(b:comment_leader, "\\(\\\\\\|\\/\\)", {m -> '\'.m[1]}, "g")." \\1/e"
-	endif
-endfunction
+"-- function Build_Replacer(long)
+"-- 	if a:long
+"-- 		return "/^".substitute(Get_leader(), "\\(\\\\\\|\\/\\)", {m -> '\'.m[1]}, "g")."-- //"
+"-- 	else
+"-- 		return "/^".substitute(Get_leader(), "\\(\\\\\\|\\/\\)", {m -> '\'.m[1]}, "g")." //"
+"-- 	endif
+"-- endfunction
+"-- 
+"-- function Build_Inserter(long)
+"-- 	if a:long
+"-- 		return "/^\\(.\\)/".substitute(Get_leader(), "\\(\\\\\\|\\/\\)", {m -> '\'.m[1]}, "g")."-- \\1/e"
+"-- 	else
+"-- 		return "/^\\(.\\)/".substitute(Get_leader(), "\\(\\\\\\|\\/\\)", {m -> '\'.m[1]}, "g")." \\1/e"
+"-- 	endif
+"-- endfunction
+"-- 
+"-- function Inserter(long)
+"-- 	if a:long
+"-- 		return "/^\\(.\\)/".substitute(Get_leader(), "\\(\\\\\\|\\/\\)", {m -> '\'.m[1]}, "g")."-- \\1/e"
+"-- 	else
+"-- 		return "/^\\(.\\)/".substitute(Get_leader(), "\\(\\\\\\|\\/\\)", {m -> '\'.m[1]}, "g")." \\1/e"
+"-- 	endif
+"-- endfunction
+
+function Build_Comment_Expr()
+	if exists("b:comment_literal")
+		let cl = b:comment_literal
+	else 
+		let cl = b:comment_leader
+	endif 
+	return substitute(cl, "\\(\\\\\\|\\/\\)", {m -> '\'.m[1]}, "g")
+endfunction 
 
 " --------------------------------------------------
 " file read-write autocommands
@@ -355,6 +379,8 @@ if !exists("autocommands_loaded")
 
   " R
   au BufFilePost,BufRead,BufNewFile *.rmd setlocal filetype=markdown syntax=markdown tw=75
+  
+
 
   "Web stuff
   au BufRead,BufNewFile *.html setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4 syntax=html filetype=html
@@ -364,6 +390,9 @@ if !exists("autocommands_loaded")
 
   " MARKDOWN
   au BufFilePost,BufRead,BufNewFile *.md setlocal filetype=markdown syntax=markdown tw=75
+
+  " enclose a word in backticks
+  au FileType markdown nnoremap <buffer> <c-w> lbi`<esc>ea`<esc>b
 
   "PYTHON
   au BufFilePost,BufRead,BufNewFile *.py setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4 syntax=python filetype=python
@@ -393,7 +422,7 @@ if !exists("autocommands_loaded")
   au FileType r iabb <buffer> >< %>%
 "--   au FileType r inoremap <buffer> dtos( format(as.Date(date(), "%a %b %d %H:%M:%S %Y"), "%Y%m%d")
 "--   au FileType r iabb <buffer> as.Date( as.Date(as.character( ),'%m/%d/%Y')
-  au FileType r inoremap <buffer> iab( pdf( FileNameHere , width = par('din')[1],height = par('din')[2] )
+  au FileType r inoremap <buffer> pdf( pdf( FileNameHere , width = par('din')[1],height = par('din')[2] )
   au FileType r inoremap <buffer> pbar pb <- winProgressBar(title = "progress bar", min = 0, max = total, width = 300)<CR>setWinProgressBar(pb, i, title=paste( round(i/total*100, 0), "% done"))<CR>close(pb)
 
 
@@ -406,6 +435,7 @@ if !exists("autocommands_loaded")
   au FileType sql iab <buffer> as AS
 
   au FileType sql iab <buffer> count COUNT
+  au FileType sql iab <buffer> convert CONVERT
 
   au FileType sql iab <buffer> from FROM
   au FileType sql iab <buffer> join JOIN
@@ -458,16 +488,18 @@ if !exists("autocommands_loaded")
   " Buffer variables for FAST CODE COMMENTING
   "--------------------------------------------------
 
+
   " DEFAULT SETTINGS
-"--   au FileType '' let b:comment_leader = '#'
-  au FileType wsf let b:comment_leader = "\'" " VBScript
-  au FileType java,html,javascript,typescript,css let b:comment_leader = '//'
-  au FileType vfp8 let b:comment_leader = '*' " FoxPro
-  au FileType tex,matlab let b:comment_leader = '%'
-  au FileType vim let b:comment_leader = '"'
-  au FileType ps1,sh,make,r,python,mysql let b:comment_leader = '#'
-  au FileType sql let b:comment_leader = '-'
-  au FileType autohotkey let b:comment_leader = ';'
+"--   au FileType '' let b:comment_literal = '#'
+  au FileType wsf let b:comment_literal = "\'" " VBScript
+  au FileType java,html,javascript,typescript,css let b:comment_literal = '//'
+  au FileType vfp8 let b:comment_literal = '*' " FoxPro
+  au FileType tex,matlab let b:comment_literal = '%'
+  au FileType vim let b:comment_literal = '"'
+  au FileType ps1,sh,make,r,python,mysql let b:comment_literal = '#'
+  au FileType sql let b:comment_literal = '--'
+  au FileType autohotkey let b:comment_literal = ';'
+
   " -----------------------------------------------------------------
 
 	" --------------------------------------------------
