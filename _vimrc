@@ -425,46 +425,31 @@ if !exists("autocommands_loaded")
   au FileType r inoremap <buffer> pdf( pdf( FileNameHere , width = par('din')[1],height = par('din')[2] )
   au FileType r inoremap <buffer> pbar pb <- winProgressBar(title = "progress bar", min = 0, max = total, width = 300)<CR>setWinProgressBar(pb, i, title=paste( round(i/total*100, 0), "% done"))<CR>close(pb)
 
-
   " --------------------------------------------------
   " MAPPINGS FOR SQL
   " --------------------------------------------------
-  au FileType sql iab <buffer> sele SELECT
-  au FileType sql iab <buffer> select SELECT
-  au FileType sql iab <buffer> dist DISTINCT
-  au FileType sql iab <buffer> as AS
+  for word in split("AS BY IN OR IS ON", " ")
+  		exe "au FileType sql iab <buffer> ".tolower(word)." ".word
+  endfor 
 
-  au FileType sql iab <buffer> count COUNT
-  au FileType sql iab <buffer> convert CONVERT
+  for word in split("TOP AND NOT MIN MAX AVG SUM END", " ")
+  		exe "au FileType sql iab <buffer> ".tolower(word)." ".word
+  endfor 
 
-  au FileType sql iab <buffer> from FROM
-  au FileType sql iab <buffer> join JOIN
-  au FileType sql iab <buffer> outer OUTER JOIN
-  au FileType sql iab <buffer> inner INNER JOIN
-  au FileType sql iab <buffer> left LEFT JOIN
-  au FileType sql iab <buffer> right RIGHT JOIN
+  for word in split("FROM JOIN NULL LIKE CASE WHEN THEN ELSE", " ")
+  		exe "au FileType sql iab <buffer> ".tolower(word)." ".word
+  endfor 
 
-  au FileType sql iab <buffer> group GROUP BY
-  au FileType sql iab <buffer> order ORDER BY
-  au FileType sql iab <buffer> haveing HAVEING
-  au FileType sql iab <buffer> where WHERE
-  au FileType sql iab <buffer> null NULL
-  au FileType sql iab <buffer> top TOP
-  au FileType sql iab <buffer> like LIKE
-  au FileType sql iab <buffer> in IN
-  au FileType sql iab <buffer> between BETWEEN
-  au FileType sql iab <buffer> exists EXISTS
+  for word in split("SELECT DISTINCT COUNT CONVERT GROUP ORDER HAVING WHERE BETWEEN EXISTS UNION EXTRACT", " ")
+  		exe "au FileType sql iab <buffer> ".tolower(word)." ".word
+  		exe "au FileType sql iab <buffer> ".strpart(tolower(word),0,4)." ".word
+  endfor 
 
-  au FileType sql iab <buffer> union UNION
-  au FileType sql iab <buffer> and AND
-  au FileType sql iab <buffer> or OR
-
-  au FileType sql iab <buffer> not NOT
-  au FileType sql iab <buffer> min MIN
-  au FileType sql iab <buffer> max MAX
-  au FileType sql iab <buffer> avg AVG
-  au FileType sql iab <buffer> sum SUM
-  au FileType sql iab <buffer> extract EXTRACT
+  for word in split("OUTER INNER LEFT RIGHT", " ")
+  		exe "au FileType sql iab <buffer> ".tolower(word)." ".word." JOIN "
+  endfor 
+ 
+  " Old habits die hard : 
   au FileType sql iab <buffer> == =
 
   " --------------------------------------------------
