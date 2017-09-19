@@ -16,3 +16,6 @@
 [submodule "vimfiles/bundle/vim-misc"]
 	path = vimfiles/bundle/vim-misc
 	url = https://github.com/xolox/vim-misc
+[submodule "vim-ps1"]
+	path = vim-ps1
+	url = https://github.com/PProvost/vim-ps1.git

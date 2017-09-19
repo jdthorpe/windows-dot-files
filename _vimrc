@@ -380,7 +380,9 @@ if !exists("autocommands_loaded")
   " R
   au BufFilePost,BufRead,BufNewFile *.rmd setlocal filetype=markdown syntax=markdown tw=75
   
-
+  " PowerShell
+  au BufRead,BufNewFile *.ps1 setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4 syntax=ps1 filetype=ps1
+  au BufRead,BufNewFile *.psm setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4 syntax=ps1 filetype=ps1
 
   "Web stuff
   au BufRead,BufNewFile *.html setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4 syntax=html filetype=html
@@ -420,6 +422,7 @@ if !exists("autocommands_loaded")
   au FileType r iabb <buffer> _ <-
   au FileType r inoreabbrev <buffer> __ _
   au FileType r iabb <buffer> >< %>%
+  au FileType r iabb <buffer> lu( length(unique(
 "--   au FileType r inoremap <buffer> dtos( format(as.Date(date(), "%a %b %d %H:%M:%S %Y"), "%Y%m%d")
 "--   au FileType r iabb <buffer> as.Date( as.Date(as.character( ),'%m/%d/%Y')
   au FileType r inoremap <buffer> pdf( pdf( FileNameHere , width = par('din')[1],height = par('din')[2] )
