@@ -3,19 +3,22 @@
 	url = https://github.com/pangloss/vim-javascript.git
 [submodule "vimfiles/bundle/vim-airline"]
 	path = vimfiles/bundle/vim-airline
-	url = https://github.com/vim-airline/vim-airline
+	url = https://github.com/vim-airline/vim-airline.git
+[submodule "vimfiles/bundle/supertab"]
+	path = vimfiles/bundle/supertab
+	url = https://github.com/ervandew/supertab.git
 [submodule "vimfiles/bundle/typescript-vim"]
 	path = vimfiles/bundle/typescript-vim
 	url = https://github.com/leafgarland/typescript-vim.git
 [submodule "vimfiles/bundle/vim-session"]
 	path = vimfiles/bundle/vim-session
-	url = https://github.com/xolox/vim-session
+	url = https://github.com/xolox/vim-session.git
 [submodule "vimfiles/bundle/vim-markdown"]
 	path = vimfiles/bundle/vim-markdown
-	url = https://github.com/plasticboy/vim-markdown
+	url = https://github.com/plasticboy/vim-markdown.git
 [submodule "vimfiles/bundle/vim-misc"]
 	path = vimfiles/bundle/vim-misc
-	url = https://github.com/xolox/vim-misc
+	url = https://github.com/xolox/vim-misc.git
 [submodule "vim-ps1"]
 	path = vim-ps1
 	url = https://github.com/PProvost/vim-ps1.git
