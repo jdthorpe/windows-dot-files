@@ -50,6 +50,18 @@
 if !has('win32')&& isdirectory('c:/python27/')
      let $PATH = 'c:/python27/;c:/python27/libs;' . $PATH
 endif
+"-- if has('win32')&& isdirectory('C:/Users/jathorpe/AppData/Local/Continuum/anaconda2/envs/py35_32bit/')
+"--      let $PATH = 'C:/Users/jathorpe/AppData/Local/Continuum/anaconda2/envs/py35_32bit;C:/Users/jathorpe/AppData/Local/Continuum/anaconda2/envs/py35_32bit/libs;' . $PATH
+"-- endif
+if has('win32')&& isdirectory('C:/Users/jathorpe/AppData/Local/Continuum/anaconda2/envs/py27_32bit/')
+"-- 	echo isdirectory('C:/Users/jathorpe/AppData/Local/Continuum/anaconda2/envs/py27_32bit/')
+     let $PATH = 'C:/Users/jathorpe/AppData/Local/Continuum/anaconda2/envs/py27_32bit/;C:/Users/jathorpe/AppData/Local/Continuum/anaconda2/envs/py27_32bit/lib/;' . $PATH
+	let $PYTHONPATH = 'C:/Users/jathorpe/AppData/Local/Continuum/anaconda2/envs/py27_32bit/;
+				\C:/Users/jathorpe/AppData/Local/Continuum/anaconda2/envs/py27_32bit/DLLs/;
+				\:/Users/jathorpe/AppData/Local/Continuum/anaconda2/envs/py27_32bit/lib/;' 
+"--      let $PATH = 'C:/Users/jathorpe/AppData/Local/Continuum/anaconda2/envs/py27_32bit/;C:/Users/jathorpe/AppData/Local/Continuum/anaconda2/envs/py27_32bit/lib/;' . $PATH
+"--      let $PYTHONPATH = 'C:/Users/jathorpe/AppData/Local/Continuum/anaconda2/envs/py27_32bit;C:/Users/jathorpe/AppData/Local/Continuum/anaconda2/envs/py27_32bit/lib;' . $PYTHONPATH
+endif
 
 set encoding=utf-8
 
@@ -62,6 +74,10 @@ let vimrplugin_r_path = "C:\\Program Files\\Microsoft\\MRO-3.3.1\\bin\\x64"
 " --------------------------------------------------
 " GUI PREFERENCES
 " --------------------------------------------------
+
+" THE PREVIEW WINDOW IN JEDI-VIM IS SUPER ANNOYING!
+set completeopt-=preview
+let g:jedi#auto_initialization = 0
 
 " SHOW TABS AND TRAILING SPACES AND EOL CHARACTERS IN LIST MODE (:set list)
 set listchars=tab:>-,trail:-,eol:$
@@ -140,8 +156,9 @@ Helptags " https://stackoverflow.com/a/9391768/1519199
 "--------------------------------------------------
 " https://mutelight.org/dbext-the-last-sql-client-youll-ever-need
 " Microsoft SQL Server
-"-- let g:dbext_default_profile_my_db = 'type=SQLSRV:srvname=my.database.windows.net,1433:dbname=customer'
-"-- let g:dbext_default_profile = 'my_db'
+"-- let g:dbext_default_profile_vNext = 'type=SQLSRV:srvname=prod-product360-west.database.windows.net,1433:dbname=Product360'
+let g:dbext_default_profile_vNext = 'type=SQLSRV:srvname=prod-product360-northcentral.database.windows.net,1433:dbname=Product360'
+let g:dbext_default_profile = 'vNext'
 
 let g:dbext_default_SQLSRV_bin = 'sqlcmd'
 let g:dbext_default_SQLSRV_cmd_options = '-b -G -N -I'
@@ -175,11 +192,13 @@ nnoremap L .k
 " MAP REDO TO THE 'R' KEY (FOR SYMETRY WITH THE 'U' KEY)
 nmap r <C-R>
 
-" jump up and down open windows
+" JUMP UP AND DOWN OPEN WINDOWS
+" NOTE THAT <c-h> is set in mswin.vim and overrides this if not commented out.
+" use `:verbose nmap` for details
 nnoremap <c-h> <c-w>W
 nnoremap <c-l> <c-w>w
 
-" loop over the open bufferes in the current window
+" loop over the open buffers in the current window
 nmap <c-j> :bnext<CR>
 nmap <c-k> :bprevious<CR>
 
@@ -372,6 +391,7 @@ if !exists("autocommands_loaded")
   " R
   au BufFilePost,BufRead,BufNewFile *.r setlocal syntax=r filetype=r foldmethod=marker
   au BufFilePost,BufRead,BufNewFile *.rfmt setlocal syntax=r filetype=r foldmethod=marker
+  au BufFilePost,BufRead,BufNewFile *.stan setlocal syntax=stan filetype=stan foldmethod=marker
   "au BufFilePost,BufRead,BufNewFile *.rd setlocal syntax=r filetype=r foldmethod=marker
   au BufFilePost,BufRead,BufNewFile .Rprofile setlocal syntax=r filetype=r foldmethod=marker
   " NOTE TO SELF the default for foldmethod is 'manual'
@@ -421,12 +441,16 @@ if !exists("autocommands_loaded")
   au FileType r inoremap <buffer> nid if(!inherits(data[,'denrollvisit'],'Date'))
   au FileType r iabb <buffer> _ <-
   au FileType r inoreabbrev <buffer> __ _
-  au FileType r iabb <buffer> >< %>%
   au FileType r iabb <buffer> lu( length(unique(
+  au FileType r iabb <buffer> >< %>%
 "--   au FileType r inoremap <buffer> dtos( format(as.Date(date(), "%a %b %d %H:%M:%S %Y"), "%Y%m%d")
 "--   au FileType r iabb <buffer> as.Date( as.Date(as.character( ),'%m/%d/%Y')
   au FileType r inoremap <buffer> pdf( pdf( FileNameHere , width = par('din')[1],height = par('din')[2] )
   au FileType r inoremap <buffer> pbar pb <- winProgressBar(title = "progress bar", min = 0, max = total, width = 300)<CR>setWinProgressBar(pb, i, title=paste( round(i/total*100, 0), "% done"))<CR>close(pb)
+
+  " MAPPINGS FOR Stan (arrow borrowed from R...)
+  au FileType stan iabb <buffer> _ <-
+  au FileType stan inoreabbrev <buffer> __ _
 
   " --------------------------------------------------
   " MAPPINGS FOR SQL
@@ -479,6 +503,7 @@ if !exists("autocommands_loaded")
 
   " DEFAULT SETTINGS
 "--   au FileType '' let b:comment_literal = '#'
+  au FileType stan let b:comment_literal = '//' " Stan
   au FileType wsf let b:comment_literal = "\'" " VBScript
   au FileType java,html,javascript,typescript,css let b:comment_literal = '//'
   au FileType vfp8 let b:comment_literal = '*' " FoxPro
