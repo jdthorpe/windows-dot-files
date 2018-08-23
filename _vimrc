@@ -1,3 +1,4 @@
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " for lack of another handy place to put 'em, here are the zencoding shortcuts:
 " each shortcut is preceded by a <C-Y>
@@ -22,26 +23,8 @@
 " https://github.com/jdthorpe/Vim-R-Syntax
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-
-" --------------------------------------------------
-" System specific preferences
-" --------------------------------------------------
-"--
-"-- if substitute(system('uname'), "\n", "", "") == "Darwin"
-"--   cd ~/Dev/
-"--
-"--   " START A NEW R SESSION (OSX ONLY?)
-"--   " cab newR !open -n /Applications/r.app
-"--   cab newR !open -n "/Applications/Revolution R Open.app"
-"--
-"--   let g:vimrplugin_term = "/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal"
-"--
-"-- else
-"--
-"--   set shell=%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe
-"--   cd h:\
-"--
-"-- endif
+" Random note: fastest way to pretty-format json in vim:
+" :%!python -m json.tool
 
 "------------------------------
 " set the path to include win64 if necessary
@@ -152,16 +135,26 @@ execute pathogen#infect()
 Helptags " https://stackoverflow.com/a/9391768/1519199
 
 "--------------------------------------------------
+" Typescript related options...
+"--------------------------------------------------
+let g:tsuquyomi_disable_quickfix = 1
+
+"--------------------------------------------------
 " database connections
 "--------------------------------------------------
 " https://mutelight.org/dbext-the-last-sql-client-youll-ever-need
 " Microsoft SQL Server
-"-- let g:dbext_default_profile_vNext = 'type=SQLSRV:srvname=prod-product360-west.database.windows.net,1433:dbname=Product360'
-let g:dbext_default_profile_vNext = 'type=SQLSRV:srvname=prod-product360-northcentral.database.windows.net,1433:dbname=Product360'
+"
+" NOTE: **THESE ARE NOT SQL CONNECTION STRINGS -- THEY ARE DBEXT OPTIONS** see
+"
+" 		:h dbext
+"
+" for details.
+let g:dbext_default_profile_vNext = 'type=SQLSRV:srvname=path.to.server,1433:dbname=Product360'
 let g:dbext_default_profile = 'vNext'
 
 let g:dbext_default_SQLSRV_bin = 'sqlcmd'
-let g:dbext_default_SQLSRV_cmd_options = '-b -G -N -I'
+let g:dbext_default_SQLSRV_cmd_options = '-b -I -G -N' 
 
 "--------------------------------------------------
 " load colors
@@ -435,7 +428,9 @@ if !exists("autocommands_loaded")
   au FileType * :silent! vunmap %
 
   " MAPPINGS FOR typescritp
-  au FileType typescript :inoremap <buffer> >> =>
+  au FileType typescript,javascript :inoremap <buffer> >> =>
+
+  au FileType python inoremap <buffer> >> import pdb; pdb.set_trace()
 
   " MAPPINGS FOR R
   au FileType r inoremap <buffer> nid if(!inherits(data[,'denrollvisit'],'Date'))
@@ -447,6 +442,7 @@ if !exists("autocommands_loaded")
 "--   au FileType r iabb <buffer> as.Date( as.Date(as.character( ),'%m/%d/%Y')
   au FileType r inoremap <buffer> pdf( pdf( FileNameHere , width = par('din')[1],height = par('din')[2] )
   au FileType r inoremap <buffer> pbar pb <- winProgressBar(title = "progress bar", min = 0, max = total, width = 300)<CR>setWinProgressBar(pb, i, title=paste( round(i/total*100, 0), "% done"))<CR>close(pb)
+  au FileType r inoremap <buffer> pdf.off pdf.off <- function(){ dl <- dev.list(); for(i in which(names(dl) == "pdf")) dev.off(dl[i]) }
 
   " MAPPINGS FOR Stan (arrow borrowed from R...)
   au FileType stan iabb <buffer> _ <-
@@ -483,6 +479,7 @@ if !exists("autocommands_loaded")
 
   " MAPPINGS FOR SuperTab
   au FileType java,python let b:SuperTabDefaultCompletionType = '<c-x><c-u>'
+  au FileType typescript let b:SuperTabDefaultCompletionType = '<c-x><c-o>' " omni completion ...
 
   "-----------------------------------
   " MAC VIM GOES CRAZY WHEN FF=MAC
@@ -552,8 +549,6 @@ set sessionoptions-=buffers
 "-- let g:session_menu = 0
 "-- exec 'SaveSession '.g:sessionid
 let g:session_autoload = 'no'
-
-
 
 " --------------------------------------------------
 " SYSTEM GENERATED STUFF BELOW
@@ -647,3 +642,4 @@ endfunction
 
 " A GUI FILE BROWSER
 " cab sel browse e
+
